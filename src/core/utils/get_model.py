@@ -22,7 +22,7 @@ def load_xgboost_model(model_dir: Path, model_name:str):
         raise FileNotFoundError(f"XGBoost model file not found at: {model_path}")
 
     # Load the XGBoost model
-    bst = xgb.Booster()
+    bst = xgb.XGBClassifier()
     bst.load_model(model_path)
 
     return bst

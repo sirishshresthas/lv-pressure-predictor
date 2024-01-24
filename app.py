@@ -2,38 +2,100 @@ import gradio as gr
 
 from src.core import LVCPredictor
 
-LVCP = LVCPredictor(model_name="xgboost_classifier_model.json")
+LVCP = LVCPredictor(model_name="xg_SHAP.json")
 
-# Create sliders for the parameters
-slider1 = gr.Slider(minimum=0, maximum=10, label="Parameter 1")
-slider2 = gr.Slider(minimum=0, maximum=10, label="Parameter 2")
-slider3 = gr.Slider(minimum=0, maximum=10, label="Parameter 3")
-slider4 = gr.Slider(minimum=0, maximum=10, label="Parameter 4")
-slider5 = gr.Slider(minimum=0, maximum=10, label="Parameter 5")
 
-# Create textboxes for the parameters
-textbox1 = gr.Textbox(value=5, label="Parameter 1")
-textbox2 = gr.Textbox(value=5, label="Parameter 2")
-textbox3 = gr.Textbox(value=5, label="Parameter 3")
-textbox4 = gr.Textbox(value=5, label="Parameter 4")
-textbox5 = gr.Textbox(value=5, label="Parameter 5")
+# Define Gradio output components
+output_components = [
+    gr.Text(label="Predicted Class (%)"),
+    gr.Image(label="Predicted Class Probability"),
+]
 
-# Combine sliders and textboxes for each parameter
-param1_input = textbox1 # gr.Row([slider1, textbox1])
-param2_input = textbox2 # gr.Row([slider2, textbox2])
-param3_input = textbox3 # gr.Row([slider3, textbox3])
-param4_input = textbox4 # gr.Row([slider4, textbox4])
-param5_input = textbox5 # gr.Row([slider5, textbox5])
+def debug_function(ea, e_prime, e_over_e_prime, trpg, ivc_diam, lv_dim, ef, la_dim, lavi):
+    print(ea, e_prime, e_over_e_prime, trpg, ivc_diam, lv_dim, ef, la_dim, lavi)
+    return "Debug output"
 
-# Create an interface with an image input, parameter sliders, and buttons
-iface = gr.Interface(
-    fn=LVCP.predict,
-    inputs=[param1_input, param2_input, param3_input, param4_input],
-    outputs=["text", "image"],
-    allow_flagging='never',
-    theme=gr.themes.Default(),
-    title='LV Capillary Pressure'
-)
+def reset_inputs():
+    return [0] * 9
 
-# Launch the interface
-iface.launch(share=True)
+
+with gr.Blocks() as demo:
+    gr.Markdown('## LV Prediction')
+    with gr.Column():
+        with gr.Row():
+            ea = gr.Number(value=0.8, label="E/A ratio",
+                           minimum=0.01, maximum=9.9)
+            e_prime = gr.Number(
+                value=6.5, label="septal e' (cm/s)", minimum=0.01, maximum=30.0)
+            e_over_e_prime = gr.Number(
+                value=10.8, label="septal E/e' ratio", minimum=0.1, maximum=99.9)
+        
+        with gr.Row():
+            trpg = gr.Number(value=16, label="TRPG (mmHg)",
+                             minimum=0, maximum=150)
+            ivc_diam = gr.Number(
+                value=12, label="max IVC diameter (mm)", minimum=1, maximum=50)
+            lv_dim = gr.Number(
+                value=46, label="LV end-diastolic dimension (mm)", minimum=20, maximum=150)
+        
+        with gr.Row():
+            ef = gr.Number(
+                value=55, label="LV ejection fraction (%)", minimum=1, maximum=99)
+            la_dim = gr.Number(
+                value=37, label="LA dimension (mm)", minimum=10, maximum=150)
+            lavi = gr.Number(
+                value=32, label="LA volume index (ml/m2)", minimum=10, maximum=500)
+            
+        with gr.Row():
+            reset = gr.Button('Cancel', variant='secondary')
+            ok = gr.Button("Submit", variant='primary')
+
+
+    gr.HTML("<hr style='margin-top: 50px; margin-bottom: -10px' />")
+    
+    with gr.Column():
+        gr.Markdown("## Output")
+
+        with gr.Row():
+            pred_box = gr.Text(label="Predicted Class (%)", scale=1)
+            plot = gr.Plot(label="Predicted Class Probability", scale=2)
+
+
+    reset.click(
+        reset_inputs,
+        inputs=[],
+        outputs=[ea, e_prime, e_over_e_prime, trpg, ivc_diam, lv_dim, ef, la_dim, lavi]
+    )
+
+    ok.click(
+        LVCP.predict,
+        inputs=[ea, e_prime, e_over_e_prime, trpg, ivc_diam, lv_dim, ef, la_dim, lavi],
+        outputs=[pred_box, plot]
+    )
+
+        
+            
+
+
+# ## gradio input components
+# demo = gr.Interface(
+#     LVCP.predict,
+#     [
+#         gr.Number(value=0.8, label="E/A ratio", minimum=0.01, maximum=9.9),
+#         gr.Number(value=6.5, label="septal e' (cm/s)", minimum=0.01, maximum=30.0),
+#         gr.Number(value=10.8, label="septal E/e' ratio", minimum=0.1, maximum=99.9),
+#         gr.Number(value=16, label="TRPG (mmHg)", minimum=0, maximum=150),
+#         gr.Number(value=12, label="max IVC diameter (mm)", minimum=1, maximum=50),
+#         gr.Number(value=46, label="LV end-diastolic dimension (mm)", minimum=20, maximum=150),
+#         gr.Number(value=55, label="LV ejection fraction (%)", minimum=1, maximum=99),
+#         gr.Number(value=37, label="LA dimension (mm)", minimum=10, maximum=150),
+#         gr.Number(value=32, label="LA volume index (ml/m2)", minimum=10, maximum=500)
+#     ],
+#     allow_flagging='never',
+#     outputs=output_components,
+#     title="Cardiac Function Prediction",
+
+# )
+
+# Launch the app
+demo.launch()

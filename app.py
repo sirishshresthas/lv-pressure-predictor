@@ -74,28 +74,5 @@ with gr.Blocks() as demo:
     )
 
         
-            
-
-
-# ## gradio input components
-# demo = gr.Interface(
-#     LVCP.predict,
-#     [
-#         gr.Number(value=0.8, label="E/A ratio", minimum=0.01, maximum=9.9),
-#         gr.Number(value=6.5, label="septal e' (cm/s)", minimum=0.01, maximum=30.0),
-#         gr.Number(value=10.8, label="septal E/e' ratio", minimum=0.1, maximum=99.9),
-#         gr.Number(value=16, label="TRPG (mmHg)", minimum=0, maximum=150),
-#         gr.Number(value=12, label="max IVC diameter (mm)", minimum=1, maximum=50),
-#         gr.Number(value=46, label="LV end-diastolic dimension (mm)", minimum=20, maximum=150),
-#         gr.Number(value=55, label="LV ejection fraction (%)", minimum=1, maximum=99),
-#         gr.Number(value=37, label="LA dimension (mm)", minimum=10, maximum=150),
-#         gr.Number(value=32, label="LA volume index (ml/m2)", minimum=10, maximum=500)
-#     ],
-#     allow_flagging='never',
-#     outputs=output_components,
-#     title="Cardiac Function Prediction",
-
-# )
-
 # Launch the app
-demo.launch()
+demo.launch(share=True)

@@ -1,11 +1,27 @@
 from pathlib import Path
-
+from typing import Tuple
 import numpy as np
+import xgboost as xgb
 
 from .get_model import load_xgboost_model
 
 
-def predict_heart_elevation(model_dir: Path, model_name: str, input_data: np.array):
+def predict_heart_elevation(model_dir: Path, model_name: str, input_data: np.array) -> Tuple[int, float, xgb.Booster]:
+
+    """
+    Predict heart elevation using an XGBoost model.
+
+    Args:
+        model_dir (Path): The directory containing the XGBoost model file.
+        model_name (str): The filename of the XGBoost model to be loaded.
+        input_data (np.array): Input data for making predictions.
+
+    Returns:
+        Tuple[int, float, xgb.Booster]: A tuple containing:
+            - predicted_class (int): The predicted class or label.
+            - predicted_class_probability (float): The probability of the predicted class.
+            - model (xgb.Booster): The loaded XGBoost model.
+    """
 
     # load the model
     model = load_xgboost_model(
@@ -13,11 +29,10 @@ def predict_heart_elevation(model_dir: Path, model_name: str, input_data: np.arr
         model_name=model_name
     )
 
-    # Dummy prediction for illustration
     # input_data = np.array([param1, param2, param3, param4]).reshape(1, -1)
     predicted_class = model.predict(input_data)
 
-    # Convert raw predictions to probabilities using the sigmoid function
+    # Convert raw predictions to probabilities
     prediction_proba = model.predict_proba(input_data)
     predicted_class_probability = prediction_proba[0, predicted_class[0]]
 

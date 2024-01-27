@@ -1,4 +1,3 @@
-from pathlib import Path
 from typing import Tuple
 import matplotlib as plt
 
@@ -12,15 +11,16 @@ class LVCPredictor:
     def __init__(self, model_name):
         self.model_name = model_name
 
-    def predict(self, E_A_ratio: float,
-                septal_e_cm_s: float,
-                septal_E_e_ratio: float,
-                TRPG_mmHg: float,
-                max_IVC_diameter_mm: float,
-                LV_end_diastolic_dimension_mm: float,
-                LV_ejection_fraction: float,
-                LA_dimension_mm: float,
-                LA_volume_index_ml_m2: float
+    def predict(self,
+                TTE_EbyA: float,
+                TTE_Epr_sep: float,
+                TTE_EbyEpr_sep: float,
+                TTE_TRPG: float,
+                TTE_LAVI: float,
+                TTE_IVCmax: float,
+                TTE_Dd: float,
+                TTE_LVEF: float,
+                TTE_LAd: float
                 ) -> Tuple[str, plt.pyplot]:
         """
         Predict heart elevation using an XGBoost model and explain the prediction with a force plot.
@@ -44,14 +44,15 @@ class LVCPredictor:
 
         # Create a numpy array from the input data
         input_data = np.array([[
-            E_A_ratio,
-            septal_e_cm_s,
-            septal_E_e_ratio,
-            TRPG_mmHg,
-            max_IVC_diameter_mm,
-            LV_end_diastolic_dimension_mm,
-            LV_ejection_fraction, LA_dimension_mm,
-            LA_volume_index_ml_m2
+            TTE_EbyA,
+            TTE_Epr_sep,
+            TTE_EbyEpr_sep,
+            TTE_TRPG,
+            TTE_LAVI,
+            TTE_IVCmax,
+            TTE_Dd,
+            TTE_LVEF,
+            TTE_LAd
         ]])
 
         prediction_class, class_proba, model = predict_heart_elevation(

@@ -13,28 +13,29 @@ class LVCPredictorApp:
             gr.Markdown('## LV Prediction')
             with gr.Column():
                 with gr.Row():
-                    ea = gr.Number(value=0.8, label="E/A ratio",
+                    TTE_EbyA = gr.Number(value=0.8, label="E/A ratio",
                                    minimum=0.01, maximum=9.9)
-                    e_prime = gr.Number(
+                    TTE_Epr_sep = gr.Number(
                         value=6.5, label="septal e' (cm/s)", minimum=0.01, maximum=30.0)
-                    e_over_e_prime = gr.Number(
+                    TTE_EbyEpr_sep = gr.Number(
                         value=10.8, label="septal E/e' ratio", minimum=0.1, maximum=99.9)
 
                 with gr.Row():
-                    trpg = gr.Number(
+                    TTE_TRPG = gr.Number(
                         value=16, label="TRPG (mmHg)", minimum=0, maximum=150)
-                    ivc_diam = gr.Number(
+                    TTE_LAVI = gr.Number(
+                        value=32, label="LA volume index (ml/m2)", minimum=10, maximum=500)
+                    TTE_IVCmax = gr.Number(
                         value=12, label="max IVC diameter (mm)", minimum=1, maximum=50)
-                    lv_dim = gr.Number(
-                        value=46, label="LV end-diastolic dimension (mm)", minimum=20, maximum=150)
 
                 with gr.Row():
-                    ef = gr.Number(
+                    TTE_Dd = gr.Number(
+                        value=46, label="LV end-diastolic dimension (mm)", minimum=20, maximum=150)
+                    TTE_LVEF = gr.Number(
                         value=55, label="LV ejection fraction (%)", minimum=1, maximum=99)
-                    la_dim = gr.Number(
+                    TTE_LAd = gr.Number(
                         value=37, label="LA dimension (mm)", minimum=10, maximum=150)
-                    lavi = gr.Number(
-                        value=32, label="LA volume index (ml/m2)", minimum=10, maximum=500)
+                    
 
                 # buttons
                 with gr.Row():
@@ -56,29 +57,29 @@ class LVCPredictorApp:
             reset.click(
                 reset_inputs,
                 inputs=[],
-                outputs=[ea,
-                         e_prime,
-                         e_over_e_prime,
-                         trpg,
-                         ivc_diam,
-                         lv_dim,
-                         ef,
-                         la_dim,
-                         lavi]
+                outputs=[TTE_EbyA,
+                         TTE_Epr_sep,
+                         TTE_EbyEpr_sep,
+                         TTE_TRPG,
+                         TTE_LAVI,
+                         TTE_IVCmax,
+                         TTE_Dd,
+                         TTE_LVEF,
+                         TTE_LAd]
             )
 
             # submit button
             ok.click(
                 self.LVCP.predict,
-                inputs=[ea,
-                        e_prime,
-                        e_over_e_prime,
-                        trpg,
-                        ivc_diam,
-                        lv_dim,
-                        ef,
-                        la_dim,
-                        lavi],
+                inputs=[TTE_EbyA,
+                         TTE_Epr_sep,
+                         TTE_EbyEpr_sep,
+                         TTE_TRPG,
+                         TTE_LAVI,
+                         TTE_IVCmax,
+                         TTE_Dd,
+                         TTE_LVEF,
+                         TTE_LAd],
                 outputs=[pred_box, plot]
             )
 

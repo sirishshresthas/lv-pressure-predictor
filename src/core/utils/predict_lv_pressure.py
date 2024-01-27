@@ -6,8 +6,10 @@ import xgboost as xgb
 from .get_model import load_xgboost_model
 
 
-def predict_heart_elevation(model_dir: Path, model_name: str, input_data: np.array) -> Tuple[int, float, xgb.Booster]:
-
+def predict_heart_elevation(model_dir: Path,
+                            model_name: str,
+                            input_data: np.array
+                            ) -> Tuple[int, float, xgb.Booster]:
     """
     Predict heart elevation using an XGBoost model.
 
@@ -23,17 +25,28 @@ def predict_heart_elevation(model_dir: Path, model_name: str, input_data: np.arr
             - model (xgb.Booster): The loaded XGBoost model.
     """
 
+    # Validate input_data
+    if not isinstance(input_data, np.ndarray):
+        raise ValueError("Input data must be a numpy array.")
+    if input_data.ndim != 2:
+        raise ValueError("Input data must be a 2D array.")
+
     # load the model
     model = load_xgboost_model(
         model_dir=model_dir,
         model_name=model_name
     )
 
-    # input_data = np.array([param1, param2, param3, param4]).reshape(1, -1)
-    predicted_class = model.predict(input_data)
+    try:
 
-    # Convert raw predictions to probabilities
-    prediction_proba = model.predict_proba(input_data)
-    predicted_class_probability = prediction_proba[0, predicted_class[0]]
+        # input_data = np.array([param1, param2, param3, param4]).reshape(1, -1)
+        predicted_class = model.predict(input_data)
 
-    return predicted_class, predicted_class_probability, model
+        # Convert raw predictions to probabilities
+        prediction_proba = model.predict_proba(input_data)
+        predicted_class_probability = prediction_proba[0, predicted_class[0]]
+
+        return predicted_class, predicted_class_probability, model
+
+    except Exception as e:
+        raise RuntimeError(f"An error occurred during prediction: {str(e)}")

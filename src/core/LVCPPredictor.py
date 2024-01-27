@@ -26,15 +26,15 @@ class LVCPredictor:
         Predict heart elevation using an XGBoost model and explain the prediction with a force plot.
 
         Args:
-            E_A_ratio (float): E/A ratio.
-            septal_e_cm_s (float): Septal e' (cm/s).
-            septal_E_e_ratio (float): Septal E/e' ratio.
-            TRPG_mmHg (float): TRPG (mmHg).
-            max_IVC_diameter_mm (float): Max IVC diameter (mm).
-            LV_end_diastolic_dimension_mm (float): LV end-diastolic dimension (mm).
-            LV_ejection_fraction (float): LV ejection fraction (%).
-            LA_dimension_mm (float): LA dimension (mm).
-            LA_volume_index_ml_m2 (float): LA volume index (ml/m2).
+            TTE_EbyA (float): E/A ratio.
+            TTE_Epr_sep (float): Septal e' (cm/s).
+            TTE_EbyEpr_sep (float): Septal E/e' ratio.
+            TTE_TRPG (float): TRPG (mmHg).
+            TTE_LAVI (float): LA volume index (ml/m2). 
+            TTE_IVCmax (float): Max IVC diameter (mm).
+            TTE_Dd (float): LV end-diastolic dimension (mm).
+            TTE_LVEF (float): LV ejection fraction (%).
+            TTE_LAd (float): LA dimension (mm).
 
         Returns:
             Tuple[str, 'matplotlib.pyplot']: A tuple containing:
@@ -64,8 +64,8 @@ class LVCPredictor:
         # explainer
         force_plot = explain_model(model, input_data, FEATURE_NAMES)
 
-        answer = 'Elevated' if prediction_class == 1 else 'Not elevated'
+        answer = 'Not elevated' if prediction_class == 1 else 'Elevated'
 
-        answer = answer + f" ({round(class_proba * 100, 1)}%)"
+        answer = answer + f" ({round((1-class_proba) *100, 1)}%)"
 
         return answer, force_plot

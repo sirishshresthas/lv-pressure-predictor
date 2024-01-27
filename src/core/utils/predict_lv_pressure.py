@@ -40,11 +40,11 @@ def predict_heart_elevation(model_dir: Path,
     try:
 
         # input_data = np.array([param1, param2, param3, param4]).reshape(1, -1)
-        predicted_class = model.predict(input_data)
+        predicted_class = model.predict(input_data)[0]
 
         # Convert raw predictions to probabilities
         prediction_proba = model.predict_proba(input_data)
-        predicted_class_probability = prediction_proba[0, predicted_class[0]]
+        predicted_class_probability = prediction_proba[0, predicted_class]
 
         return predicted_class, predicted_class_probability, model
 

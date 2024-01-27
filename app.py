@@ -2,6 +2,13 @@ import gradio as gr
 
 from src.core import LVCPredictor, reset_inputs
 
+custom_css = """
+.prose > span > p {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+"""
+
 
 class LVCPredictorApp:
     def __init__(self, model_name: str):
@@ -9,16 +16,16 @@ class LVCPredictorApp:
 
     def create_interface(self):
 
-        with gr.Blocks() as demo:
+        with gr.Blocks(css=custom_css) as demo:
             gr.Markdown('## LV Prediction')
             with gr.Column():
                 with gr.Row():
                     TTE_EbyA = gr.Number(value=0.8, label="E/A ratio",
                                    minimum=0.01, maximum=9.9)
                     TTE_Epr_sep = gr.Number(
-                        value=6.5, label="septal e' (cm/s)", minimum=0.01, maximum=30.0)
+                        value=6.5, label="Septal e' (cm/s)", minimum=0.01, maximum=30.0)
                     TTE_EbyEpr_sep = gr.Number(
-                        value=10.8, label="septal E/e' ratio", minimum=0.1, maximum=99.9)
+                        value=10.8, label="Septal E/e' ratio", minimum=0.1, maximum=99.9)
 
                 with gr.Row():
                     TTE_TRPG = gr.Number(
@@ -26,7 +33,7 @@ class LVCPredictorApp:
                     TTE_LAVI = gr.Number(
                         value=32, label="LA volume index (ml/m2)", minimum=10, maximum=500)
                     TTE_IVCmax = gr.Number(
-                        value=12, label="max IVC diameter (mm)", minimum=1, maximum=50)
+                        value=12, label="Max IVC diameter (mm)", minimum=1, maximum=50)
 
                 with gr.Row():
                     TTE_Dd = gr.Number(
@@ -49,9 +56,9 @@ class LVCPredictorApp:
                 gr.Markdown("## Output")
 
                 with gr.Column():
-                    pred_box = gr.Markdown(label="Predicted Class (%)", scale=1)
+                    pred_box = gr.Markdown(label="Predicted Class (%)")
                     plot = gr.Plot(
-                        label="Predicted Class Probability", scale=2)
+                        label="Predicted Class Probability")
 
             # reset button
             reset.click(
@@ -85,7 +92,6 @@ class LVCPredictorApp:
 
         # Launch the app
         demo.launch(share=True)
-
 
 if __name__ == "__main__":
     app = LVCPredictorApp(model_name="xg_SHAP.json")

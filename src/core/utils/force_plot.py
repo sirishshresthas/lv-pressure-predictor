@@ -43,7 +43,11 @@ def explain_model(model: xgb.XGBModel, input_data: np.array, features: List[str]
 
         # Generate SHAP force plot with Matplotlib
         shap.force_plot(explainer.expected_value,
-                        shap_values[0], features, matplotlib=True, show=False)
+                        shap_values[0], 
+                        features, 
+                        plot_cmap='DrDb',
+                        matplotlib=True, 
+                        show=False)
 
         plt.rcParams.update({'font.size': 20})
         plt.rcParams.update({'font.weight': 'normal'})

@@ -33,18 +33,17 @@ with gr.Blocks() as demo:
         with gr.Row():
             trpg = gr.Number(value=16, label="TRPG (mmHg)",
                              minimum=0, maximum=150)
+            lavi = gr.Number(
+                value=32, label="LA volume index (ml/m2)", minimum=10, maximum=500)
             ivc_diam = gr.Number(
                 value=12, label="max IVC diameter (mm)", minimum=1, maximum=50)
+        with gr.Row():
             lv_dim = gr.Number(
                 value=46, label="LV end-diastolic dimension (mm)", minimum=20, maximum=150)
-        
-        with gr.Row():
             ef = gr.Number(
                 value=55, label="LV ejection fraction (%)", minimum=1, maximum=99)
             la_dim = gr.Number(
                 value=37, label="LA dimension (mm)", minimum=10, maximum=150)
-            lavi = gr.Number(
-                value=32, label="LA volume index (ml/m2)", minimum=10, maximum=500)
             
         with gr.Row():
             reset = gr.Button('Cancel', variant='secondary')

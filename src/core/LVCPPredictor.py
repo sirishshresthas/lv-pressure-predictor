@@ -32,10 +32,11 @@ class LVCPredictor:
             septal_e_cm_s,
             septal_E_e_ratio,
             TRPG_mmHg,
+            LA_volume_index_ml_m2,
             max_IVC_diameter_mm,
             LV_end_diastolic_dimension_mm,
-            LV_ejection_fraction, LA_dimension_mm,
-            LA_volume_index_ml_m2
+            LV_ejection_fraction, 
+            LA_dimension_mm
         ]])
 
         prediction_class, class_proba, model = predict_heart_elevation(
@@ -47,7 +48,7 @@ class LVCPredictor:
         # explainer
         force_plot = explain_model(model, input_data, FEATURE_NAMES)
 
-        answer = 'Elevated' if prediction_class == 1 else 'Not elevated'
+        answer = 'Elevated' if prediction_class == 0 else 'Not elevated'
 
         answer = answer + f" ({round(class_proba * 100, 1)}%)"
 

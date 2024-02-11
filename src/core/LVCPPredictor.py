@@ -65,8 +65,8 @@ class LVCPredictor:
         # explainer
         force_plot = explain_model(model, input_data, FEATURE_NAMES)
 
-        answer = 'Not elevated' if prediction_class == 1 else 'Elevated'
+        answer = 'Elevated' if prediction_class == 0 else 'Not elevated'
 
-        answer = answer + f" ({round((1-class_proba) *100, 1)}%)"
+        answer = answer + f" ({round(class_proba * 100, 1)}%)"
 
         return answer, force_plot

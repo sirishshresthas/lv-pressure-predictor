@@ -1,23 +1,10 @@
 from typing import Tuple
-import matplotlib as plt
 
 import matplotlib as plt
 import numpy as np
 
-from src.core.utils import explain_model, predict_heart_elevation
-
-ROOT_DIR: Path = Path.cwd()
-MODEL_DIR: Path = Path.joinpath(ROOT_DIR, "model")
-
-FEATURE_NAMES: list = ["E/A ratio",
-                       "septal e' (cm/s)",
-                       "septal E/e' ratio",
-                       "TRPG (mmHg)",
-                       "max IVC diameter (mm)",
-                       "LV end-diastolic dimension (mm)",
-                       "LV ejection fraction (%)",
-                       "LA dimension (mm)",
-                       "LA volume index (ml/m2)"]
+from src.core.utils import (FEATURE_NAMES, MODEL_DIR, explain_model,
+                            predict_heart_elevation)
 
 
 class LVCPredictor:
@@ -80,6 +67,6 @@ class LVCPredictor:
 
         answer = 'Elevated' if prediction_class == 1 else 'Not elevated'
 
-        answer = answer + f" ({round((1-class_proba) *100, 1)}%)"
+        answer = answer + f" ({round(class_proba * 100, 1)}%)"
 
         return answer, force_plot

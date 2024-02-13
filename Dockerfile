@@ -17,4 +17,4 @@ EXPOSE 7860
 ENV NAME LV-Prediction
 
 # Run app.py when the container launches
-CMD ["python", "./app.py"]
+CMD ["gradio", "./app.py"]

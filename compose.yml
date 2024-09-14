@@ -1,0 +1,10 @@
+services:
+  lvp:
+    container_name: lvp
+    image: klc:latest
+    restart: unless-stopped
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "7860:7860"

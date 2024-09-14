@@ -20,29 +20,28 @@ class LVCPredictorApp:
             gr.Markdown('## LV Prediction')
             with gr.Column():
                 with gr.Row():
-                    TTE_EbyA = gr.Number(value=0.8, label="E/A ratio",
-                                   minimum=0.01, maximum=9.9)
+                    TTE_EbyA = gr.Number(
+                        value="", label="E/A ratio", minimum=0.01, maximum=9.9)
                     TTE_Epr_sep = gr.Number(
-                        value=6.5, label="Septal e' (cm/s)", minimum=0.01, maximum=30.0)
+                        value="", label="Septal e' (cm/s)", minimum=0.01, maximum=30.0)
                     TTE_EbyEpr_sep = gr.Number(
-                        value=10.8, label="Septal E/e' ratio", minimum=0.1, maximum=99.9)
+                        value="", label="Septal E/e' ratio", minimum=0.1, maximum=99.9)
 
                 with gr.Row():
                     TTE_TRPG = gr.Number(
-                        value=16, label="TRPG (mmHg)", minimum=0, maximum=150)
+                        value="", label="TRPG (mmHg)", minimum=0, maximum=150)
                     TTE_LAVI = gr.Number(
-                        value=32, label="LA volume index (ml/m2)", minimum=10, maximum=500)
+                        value="", label="LA volume index (ml/m2)", minimum=10, maximum=500)
                     TTE_IVCmax = gr.Number(
-                        value=12, label="Max IVC diameter (mm)", minimum=1, maximum=50)
+                        value="", label="Max IVC diameter (mm)", minimum=1, maximum=50)
 
                 with gr.Row():
                     TTE_Dd = gr.Number(
-                        value=46, label="LV end-diastolic dimension (mm)", minimum=20, maximum=150)
+                        value="", label="LV end-diastolic dimension (mm)", minimum=20, maximum=150)
                     TTE_LVEF = gr.Number(
-                        value=55, label="LV ejection fraction (%)", minimum=1, maximum=99)
+                        value="", label="LV ejection fraction (%)", minimum=1, maximum=99)
                     TTE_LAd = gr.Number(
-                        value=37, label="LA dimension (mm)", minimum=10, maximum=150)
-                    
+                        value="", label="LA dimension (mm)", minimum=10, maximum=150)
 
                 # buttons
                 with gr.Row():
@@ -79,19 +78,20 @@ class LVCPredictorApp:
             ok.click(
                 self.LVCP.predict,
                 inputs=[TTE_EbyA,
-                         TTE_Epr_sep,
-                         TTE_EbyEpr_sep,
-                         TTE_TRPG,
-                         TTE_LAVI,
-                         TTE_IVCmax,
-                         TTE_Dd,
-                         TTE_LVEF,
-                         TTE_LAd],
+                        TTE_Epr_sep,
+                        TTE_EbyEpr_sep,
+                        TTE_TRPG,
+                        TTE_LAVI,
+                        TTE_IVCmax,
+                        TTE_Dd,
+                        TTE_LVEF,
+                        TTE_LAd],
                 outputs=[pred_box, plot]
             )
 
         # Launch the app
         demo.launch()
+
 
 if __name__ == "__main__":
     app = LVCPredictorApp(model_name="xg_SHAP.json")

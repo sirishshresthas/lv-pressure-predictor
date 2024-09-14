@@ -4,8 +4,5 @@ channels:
 dependencies: 
   - python=3.11
   - pip
-  - gradio
-  - scikit-learn
-  - numpy
-  - xgboost
-  - shap
+  - pip: 
+    - -r requirements.txt

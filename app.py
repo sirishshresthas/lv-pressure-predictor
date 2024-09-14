@@ -91,7 +91,7 @@ class LVCPredictorApp:
             )
 
         # Launch the app
-        demo.launch(share=True)
+        demo.launch()
 
 if __name__ == "__main__":
     app = LVCPredictorApp(model_name="xg_SHAP.json")

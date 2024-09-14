@@ -1,5 +1,6 @@
 from typing import Tuple
 import matplotlib as plt
+from matplotlib.figure import Figure
 
 import numpy as np
 
@@ -60,7 +61,6 @@ class LVCPredictor:
             model_name=self.model_name,
             input_data=input_data
         )
-
 
         # explainer
         force_plot = explain_model(model, input_data, FEATURE_NAMES)

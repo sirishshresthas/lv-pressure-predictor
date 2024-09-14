@@ -1,5 +1,5 @@
-gradio
-scikit-learn
-numpy
-xgboost
-shap
+gradio==4.44.0
+scikit-learn==1.5.2
+numpy==2.0.2
+xgboost==2.1.1
+shap==0.46.0

@@ -22,7 +22,7 @@ class LVCPredictor:
                 TTE_Dd: float,
                 TTE_LVEF: float,
                 TTE_LAd: float
-                ) -> Tuple[str, plt.Figure]:
+                ):
         """
         Predict heart elevation using an XGBoost model and explain the prediction with a force plot.
 

@@ -21,7 +21,7 @@ class LVCPredictor:
                 TTE_Dd: float,
                 TTE_LVEF: float,
                 TTE_LAd: float
-                ) -> Tuple[str, plt.pyplot]:
+                ) -> Tuple[str, plt.Figure]:
         """
         Predict heart elevation using an XGBoost model and explain the prediction with a force plot.
 
@@ -61,11 +61,17 @@ class LVCPredictor:
             input_data=input_data
         )
 
+
         # explainer
         force_plot = explain_model(model, input_data, FEATURE_NAMES)
 
+        # Determine if the prediction is elevated or not
         answer = 'Not elevated' if prediction_class == 1 else 'Elevated'
 
-        answer = answer + f" ({round((1-class_proba) *100, 1)}%)"
+        # Calculate the percentage and round to one decimal place
+        percentage = round((1 - class_proba) * 100, 1)
+
+        # Format the answer string with the rounded percentage
+        answer = f"{answer} ({percentage}%)"
 
         return answer, force_plot

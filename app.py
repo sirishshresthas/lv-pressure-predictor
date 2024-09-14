@@ -57,7 +57,7 @@ class LVCPredictorApp:
                 with gr.Column():
                     pred_box = gr.Markdown(label="Predicted Class (%)")
                     plot = gr.Plot(
-                        label="Predicted Class Probability")
+                        label="Explanation")
 
             # reset button
             reset.click(

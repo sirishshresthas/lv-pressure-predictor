@@ -68,10 +68,12 @@ class LVCPredictor:
         # Determine if the prediction is elevated or not
         answer = 'Not elevated' if prediction_class == 1 else 'Elevated'
 
-        # Calculate the percentage and round to one decimal place
-        percentage = round((1 - class_proba) * 100, 1)
+        # Calculate the percentage and format to one decimal place
+        percentage = (1 - class_proba) * 100
+        formatted_percentage = f"{percentage:.1f}"
 
         # Format the answer string with the rounded percentage
-        answer = f"{answer} ({percentage}%)"
+        answer = f"{answer} ({formatted_percentage}%)"
 
         return answer, force_plot
+

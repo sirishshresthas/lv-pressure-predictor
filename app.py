@@ -1,5 +1,4 @@
 import gradio as gr
-
 from src.core import LVCPredictor, reset_inputs
 
 custom_css = """
@@ -48,7 +47,7 @@ class LVCPredictorApp:
                     reset = gr.Button('Cancel', variant='secondary')
                     ok = gr.Button("Submit", variant='primary')
 
-            # create a separater line
+            # create a separator line
             gr.HTML("<hr style='margin-top: 50px; margin-bottom: -10px' />")
 
             with gr.Column():
@@ -56,8 +55,7 @@ class LVCPredictorApp:
 
                 with gr.Column():
                     pred_box = gr.Markdown(label="Predicted Class (%)")
-                    plot = gr.Plot(
-                        label="Explanation")
+                    plot = gr.Plot(label="Explanation")
 
             # reset button
             reset.click(
@@ -88,6 +86,17 @@ class LVCPredictorApp:
                         TTE_LAd],
                 outputs=[pred_box, plot]
             )
+
+            # Enable submission on Enter key for all inputs
+            input_fields = [TTE_EbyA, TTE_Epr_sep, TTE_EbyEpr_sep, TTE_TRPG,
+                            TTE_LAVI, TTE_IVCmax, TTE_Dd, TTE_LVEF, TTE_LAd]
+
+            for input_field in input_fields:
+                input_field.submit(
+                    self.LVCP.predict,
+                    inputs=input_fields,
+                    outputs=[pred_box, plot]
+                )
 
         # Launch the app
         demo.launch()
